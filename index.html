@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KeyClack - Mechanical Keyboard Sound Simulator</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="An interactive, high-fidelity mechanical keyboard sound simulator using procedural Web Audio API synthesis. Test Blue, Red, and Brown switch sounds in real-time.">
+  <meta name="keywords" content="mechanical keyboard, sound simulator, typing test, web audio api, clicky switch, linear switch, tactile switch, clack, thock">
+  <meta name="author" content="Antigravity">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="switch-blue">
+
+  <!-- Header Section -->
+  <header>
+    <h1>KeyClack</h1>
+    <p>Procedural mechanical keyboard simulator. Toggle switches, adjust cabinet casing acoustics, and type to hear the clack.</p>
+  </header>
+
+  <!-- Main Dashboard -->
+  <main class="main-container">
+    <div class="dashboard-grid">
+      
+      <!-- Left Column: Virtual Keyboard & Instructions -->
+      <div style="display: flex; flex-direction: column; gap: 1.5rem; width: 100%;">
+        <!-- Keyboard Board Wrapper -->
+        <div id="keyboard-container" class="keyboard-card">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+        <!-- How to Use panel -->
+        <section class="glass-panel instructions-card" aria-labelledby="instructions-title">
+          <h2 id="instructions-title" class="section-title">How to Test</h2>
+          <ul class="hint-list">
+            <li class="hint-item">Type on your <strong>physical keyboard</strong> to play and light up keys in real-time.</li>
+            <li class="hint-item">Click or tap keys directly on the <strong>virtual keyboard</strong> above.</li>
+            <li class="hint-item">Switch sound profiles or customize the sliders on the right to alter the acoustics.</li>
+          </ul>
+        </section>
+      </div>
+
+      <!-- Right Column: Switch Selector & Fine-Tuning Controls -->
+      <div style="display: flex; flex-direction: column; gap: 1.5rem; width: 100%;">
+        
+        <!-- Switch Profiler -->
+        <section class="glass-panel selector-card" aria-labelledby="selector-title">
+          <h2 id="selector-title" class="section-title">Switch Profile</h2>
+          <div class="switch-options">
+            
+            <!-- Blue Switch -->
+            <button class="switch-btn active" data-switch="blue" id="switch-select-blue" aria-label="Select Blue Clicky Switch">
+              <div class="switch-icon">B</div>
+              <div class="switch-details">
+                <span class="switch-name">Blue Switch</span>
+                <span class="switch-desc">Clicky &amp; Tactile • Crisp clack</span>
+              </div>
+            </button>
+
+            <!-- Red Switch -->
+            <button class="switch-btn" data-switch="red" id="switch-select-red" aria-label="Select Red Linear Switch">
+              <div class="switch-icon">R</div>
+              <div class="switch-details">
+                <span class="switch-name">Red Switch</span>
+                <span class="switch-desc">Linear &amp; Smooth • Buttery thock</span>
+              </div>
+            </button>
+
+            <!-- Brown Switch -->
+            <button class="switch-btn" data-switch="brown" id="switch-select-brown" aria-label="Select Brown Tactile Switch">
+              <div class="switch-icon">Br</div>
+              <div class="switch-details">
+                <span class="switch-name">Brown Switch</span>
+                <span class="switch-desc">Tactile &amp; Soft • Gentle clack</span>
+              </div>
+            </button>
+            
+          </div>
+        </section>
+
+        <!-- Customizations Engine -->
+        <section class="glass-panel controls-card" aria-labelledby="controls-title">
+          <h2 id="controls-title" class="section-title">Acoustic Customizer</h2>
+          
+          <!-- Pitch Slider -->
+          <div class="control-group">
+            <div class="control-label">
+              <span>Switch Pitch</span>
+              <span class="control-value" id="pitch-val">1.00x</span>
+            </div>
+            <input type="range" id="pitch" min="0.5" max="1.8" step="0.05" value="1.0" aria-label="Switch Pitch Slider">
+          </div>
+
+          <!-- Decay Slider -->
+          <div class="control-group">
+            <div class="control-label">
+              <span>Sound Decay</span>
+              <span class="control-value" id="decay-val">1.00x</span>
+            </div>
+            <input type="range" id="decay" min="0.4" max="2.0" step="0.05" value="1.0" aria-label="Sound Decay Slider">
+          </div>
+
+          <!-- Master Volume Slider -->
+          <div class="control-group">
+            <div class="control-label">
+              <span>Master Volume</span>
+              <span class="control-value" id="volume-val">80%</span>
+            </div>
+            <input type="range" id="volume" min="0.0" max="1.0" step="0.05" value="0.8" aria-label="Master Volume Slider">
+          </div>
+
+          <!-- Case Acoustics Materials Selector -->
+          <div class="control-group" style="margin-top: 0.5rem;">
+            <div class="control-label">
+              <span>Case Resonance</span>
+            </div>
+            <div class="case-options">
+              <button class="case-btn active" data-case="plastic" id="case-select-plastic">Plastic</button>
+              <button class="case-btn" data-case="aluminum" id="case-select-aluminum">Aluminum</button>
+              <button class="case-btn" data-case="wood" id="case-select-wood">Wood</button>
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Interactive Footer -->
+  <footer>
+    <p>KeyClack • Real-time Web Audio Synthesizer • Designed with 💙</p>
+  </footer>
+
+  <!-- App Logic Javascript -->
+  <script src="app.js"></script>
+</body>
+</html>
