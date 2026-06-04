@@ -1,0 +1,551 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Color Palette - Midnight Blue theme */
+  --bg-color: #060913;
+  --bg-glow: radial-gradient(circle at 50% 30%, #0d1b3e 0%, #060913 70%);
+  
+  --panel-bg: rgba(13, 20, 38, 0.45);
+  --panel-border: rgba(59, 130, 246, 0.15);
+  --panel-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  
+  /* Accent Colors */
+  --accent-cyan: #00f0ff;
+  --accent-blue: #3b82f6;
+  --accent-blue-rgb: 59, 130, 246;
+  --accent-glow: rgba(0, 240, 255, 0.4);
+  
+  /* Keyboard Specific standard properties */
+  --kbd-bg: #090e1a;
+  --kbd-border: rgba(59, 130, 246, 0.25);
+  
+  /* Keycap Colors (Standard / Modifiers) */
+  --key-bg: #131b31;
+  --key-text: #e2e8f0;
+  --key-shadow: #080c16;
+  --key-border: rgba(255, 255, 255, 0.05);
+  
+  --key-mod-bg: #0f1526;
+  --key-mod-text: #94a3b8;
+  
+  --key-active-glow: rgba(0, 240, 255, 0.6);
+  
+  /* Sizing */
+  --key-size: clamp(32px, 4.8vw, 54px);
+  --key-gap: clamp(4px, 0.6vw, 8px);
+  --kbd-padding: clamp(10px, 1.8vw, 20px);
+  
+  /* Switch Theme Overrides (Will be dynamically updated via JS class on body) */
+  --switch-color: var(--accent-cyan);
+  --switch-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+/* Blue (Clicky) Switch Theme */
+body.switch-blue {
+  --switch-color: #00f0ff;
+  --key-active-glow: rgba(0, 240, 255, 0.6);
+  --switch-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+
+/* Red (Linear) Switch Theme */
+body.switch-red {
+  --switch-color: #ff3b6c;
+  --key-active-glow: rgba(255, 59, 108, 0.6);
+  --switch-shadow: 0 0 15px rgba(255, 59, 108, 0.4);
+}
+
+/* Brown (Tactile) Switch Theme */
+body.switch-brown {
+  --switch-color: #d97706;
+  --key-active-glow: rgba(217, 119, 6, 0.6);
+  --switch-shadow: 0 0 15px rgba(217, 119, 6, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg-color);
+  background-image: var(--bg-glow);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 1rem;
+  overflow-x: hidden;
+}
+
+/* Smooth Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--key-bg);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-blue);
+}
+
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+  z-index: 10;
+}
+
+header h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #ffffff 40%, var(--switch-color) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+  transition: background 0.3s ease;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.3));
+}
+
+header p {
+  color: var(--text-secondary);
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  font-weight: 300;
+  max-width: 600px;
+}
+
+.main-container {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+/* Interactive Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 2.2fr 1fr;
+  }
+}
+
+/* Glassmorphic Panel Base */
+.glass-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--panel-glow);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-panel:hover {
+  border-color: rgba(59, 130, 246, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(59, 130, 246, 0.05);
+}
+
+/* Switch Type Selection Card */
+.selector-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-left: 3px solid var(--switch-color);
+  padding-left: 10px;
+  margin-bottom: 0.5rem;
+  transition: border-color 0.3s ease;
+}
+
+.switch-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.switch-btn {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-align: left;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.switch-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: transparent;
+  transition: background-color 0.25s ease;
+}
+
+.switch-btn.active {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--switch-color);
+  box-shadow: var(--switch-shadow);
+}
+
+.switch-btn.active::before {
+  background-color: var(--switch-color);
+}
+
+.switch-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.75rem;
+  color: #fff;
+}
+
+.switch-btn[data-switch="blue"] .switch-icon {
+  background: #00f0ff;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+.switch-btn[data-switch="red"] .switch-icon {
+  background: #ff3b6c;
+  box-shadow: 0 0 10px rgba(255, 59, 108, 0.4);
+}
+
+.switch-btn[data-switch="brown"] .switch-icon {
+  background: #d97706;
+  box-shadow: 0 0 10px rgba(217, 119, 6, 0.4);
+}
+
+.switch-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.switch-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.switch-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+/* Sound Customization Controls */
+.controls-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.control-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.control-value {
+  color: var(--switch-color);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+/* Custom Styled Range Sliders */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+  margin: 10px 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--switch-color);
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.1s, background-color 0.3s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(1.3);
+}
+
+/* Case Acoustic Buttons */
+.case-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+.case-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.case-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+}
+
+.case-btn.active {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: var(--switch-color);
+  color: var(--switch-color);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.05);
+}
+
+/* Keyboard Container and Plate */
+.keyboard-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Interactive Keyboard styling */
+.keyboard-plate {
+  background: var(--kbd-bg);
+  border: 4px solid var(--kbd-border);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 2px 5px rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: var(--kbd-padding);
+  display: flex;
+  flex-direction: column;
+  gap: var(--key-gap);
+  min-width: calc((var(--key-size) * 15) + (var(--key-gap) * 14) + (var(--kbd-padding) * 2));
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: border-color 0.3s ease;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: var(--key-gap);
+  width: 100%;
+}
+
+/* Keycap 3D Tactile Styling */
+.key {
+  height: var(--key-size);
+  background: var(--key-bg);
+  color: var(--key-text);
+  border: 1px solid var(--key-border);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(0.6rem, 1.1vw, 0.85rem);
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 4px 0 var(--key-shadow), 0 8px 16px rgba(0, 0, 0, 0.4);
+  transform: translateY(0);
+}
+
+/* Base key units (multipliers) */
+.key[data-w="1"] { width: var(--key-size); }
+.key[data-w="1.25"] { width: calc(var(--key-size) * 1.25); }
+.key[data-w="1.5"] { width: calc(var(--key-size) * 1.5); }
+.key[data-w="1.75"] { width: calc(var(--key-size) * 1.75); }
+.key[data-w="2"] { width: calc(var(--key-size) * 2); }
+.key[data-w="2.25"] { width: calc(var(--key-size) * 2.25); }
+.key[data-w="2.75"] { width: calc(var(--key-size) * 2.75); }
+.key[data-w="6.25"] { width: calc(var(--key-size) * 6.25); }
+
+/* Modifier Keycaps style */
+.key.modifier {
+  background: var(--key-mod-bg);
+  color: var(--key-mod-text);
+  font-size: clamp(0.5rem, 0.9vw, 0.75rem);
+  font-family: 'Outfit', sans-serif;
+  text-transform: capitalize;
+}
+
+/* Key Hover State */
+.key:hover {
+  filter: brightness(1.15);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Active Pressed Key State */
+.key.active, .key:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--key-shadow), 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: var(--switch-color);
+  color: #050811;
+  border-color: transparent;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+.key.active .key-legend, .key:active .key-legend {
+  color: #050811;
+}
+
+.key.active .key-sub, .key:active .key-sub {
+  color: rgba(5, 8, 17, 0.6);
+}
+
+/* Key label layouts */
+.key-legend {
+  align-self: flex-start;
+  transition: color 0.1s ease;
+}
+
+.key-sub {
+  align-self: flex-end;
+  font-size: 0.7em;
+  color: var(--text-muted);
+  transition: color 0.1s ease;
+}
+
+/* Special styles for Spacebar */
+.key[data-code="Space"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Key glow ripple effect on activation */
+.key.active::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px var(--key-active-glow);
+  opacity: 1;
+  pointer-events: none;
+  z-index: -1;
+  animation: keyGlowOut 0.4s ease-out forwards;
+}
+
+@keyframes keyGlowOut {
+  0% { opacity: 1; filter: blur(0); }
+  100% { opacity: 0; filter: blur(4px); }
+}
+
+/* Instructions card */
+.instructions-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.hint-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  list-style: none;
+}
+
+.hint-item {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hint-item::before {
+  content: '✦';
+  color: var(--switch-color);
+  font-size: 0.8rem;
+}
+
+/* Responsive Footer */
+footer {
+  margin-top: 3rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+footer a:hover {
+  color: var(--switch-color);
+}
